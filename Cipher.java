@@ -2,10 +2,26 @@ public class Cipher {
     public static void main(String[] args) {
         String message = "GEEKSFORGEEKS";
         String key = "AYUSH";
-        String encrypted = vigenere(message, key);
-        String decrypted = decryptVigenere(encrypted, key);
-        System.out.println(encrypted);
-        System.out.println(decrypted);
+        String encryptedMessage = encrypt(message, key);
+        String decryptedMessage = decrypt(encryptedMessage, key);
+
+        System.out.println("Message: " + message);
+        System.out.println("Key: " + key);
+        System.out.println("Encrypted message: " + encryptedMessage);
+        System.out.println("Decrypted message: " + decryptedMessage);
+    }
+
+    public static String encrypt(String message, String key) {
+        String newKey = keyGen(message, key);
+        String encrypted = vigenere(message, newKey);
+        encrypted = atBash(encrypted);
+        return encrypted;
+    }
+
+    public static String decrypt(String encryptedMessage, String key) {
+        String newKey = keyGen(encryptedMessage, key);
+        String decrypted = decryptVigenere(atBash(encryptedMessage), newKey);
+        return decrypted;
     }
 
     public static String vigenere(String message, String key) {
