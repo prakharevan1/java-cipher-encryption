@@ -1,7 +1,7 @@
 public class Cipher {
     public static void main(String[] args) {
-        String message = "GEEKSFORGEEKS";
-        String key = "AYUSH";
+        String message = "Geeksforgeeks";
+        String key = "YAAI";
         String encryptedMessage = encrypt(message, key);
         String decryptedMessage = decrypt(encryptedMessage, key);
 
@@ -28,18 +28,33 @@ public class Cipher {
         String newKey = keyGen(message, key);
         String encryptedString = "";
         for (int i = 0; i < message.length(); i++) {
-            // get values of key and current message
             int currentKeyChar = newKey.charAt(i);
             int currentMessageChar = message.charAt(i);
             int encryptedCharNum = 0;
+            boolean isLowerCase = false;
 
-            // convert to range of [0-25]
-            currentKeyChar -= 65;
-            currentMessageChar -= 65;
+            if (isSpecialCharacter((char) currentMessageChar)) {
+                encryptedString += message.charAt(i);
+                continue;
+            }
+
+            if (Character.isLowerCase(currentMessageChar)) {
+                isLowerCase = true;
+                currentMessageChar -= 32;
+            }
+
+            // convert to range of [0-25] from ascii
+            currentKeyChar -= 'A';
+            currentMessageChar -= 'A';
             encryptedCharNum = (currentKeyChar + currentMessageChar) % 26;
+
             // convert back to ASCII
             encryptedCharNum += 'A';
             // append to string
+            if (isLowerCase) {
+                encryptedString += Character.toLowerCase((char) encryptedCharNum);
+                continue;
+            }
             encryptedString += (char) encryptedCharNum;
         }
         return encryptedString;
@@ -49,15 +64,24 @@ public class Cipher {
         String decryptedString = "";
         String newKey = keyGen(encryptedMessage, key);
         for (int i = 0; i < encryptedMessage.length(); i++) {
-            // get values of key & curr msg
             int currentKeyChar = newKey.charAt(i);
             int currentEncryptedMessageChar = encryptedMessage.charAt(i);
+            boolean isLowerCase = false;
+
+            if (isSpecialCharacter((char) currentEncryptedMessageChar)) {
+                decryptedString += encryptedMessage.charAt(i);
+            }
+
+            if (Character.isLowerCase((char) currentEncryptedMessageChar)) {
+                isLowerCase = true;
+                currentEncryptedMessageChar -= 32;
+            }
 
             int decryptedCharNum = 0;
 
             // convert to range of [0-25]
-            currentKeyChar -= 65; // Y, 24
-            currentEncryptedMessageChar -= 65; // C, 2
+            currentKeyChar -= 'A';
+            currentEncryptedMessageChar -= 'A';
 
             // add 26 so negative wraps around
             decryptedCharNum = (currentEncryptedMessageChar - currentKeyChar + 26) % 26;
@@ -65,7 +89,10 @@ public class Cipher {
             // convert back to ASCII
             decryptedCharNum += 'A';
 
-            // append to string
+            if (isLowerCase) {
+                decryptedString += Character.toLowerCase((char) decryptedCharNum);
+                continue;
+            }
             decryptedString += (char) decryptedCharNum;
         }
 
@@ -88,23 +115,21 @@ public class Cipher {
     public static String atBash(String message) {
         String encryptedMessage = "";
         for (int i = 0; i < message.length(); i++) {
-            // get char
             char currentCharacter = message.charAt(i);
 
-            // check for special characters
             if (isSpecialCharacter(currentCharacter)) {
                 encryptedMessage += message.charAt(i);
                 continue;
             }
 
-            // check for lowercase characters
             boolean lowerCase = false;
             if (currentCharacter > 90) {
                 lowerCase = true;
                 currentCharacter -= 32;
             }
-            // convert the character to a range of 0-25 corresponding to A-Z
-            int encryptedCharNum = (int) (currentCharacter - 65);
+
+            // convert the character to a range of [0-25]
+            int encryptedCharNum = (int) (currentCharacter - 'A');
 
             // map it to its opposite letter on the alphabet spectrum (A -> Z, B -> Y, ...)
             encryptedCharNum = 25 - encryptedCharNum;
@@ -113,7 +138,6 @@ public class Cipher {
             encryptedCharNum += 'A';
             char encryptedCharacter = (char) encryptedCharNum;
 
-            // check for uppercase or lowercase
             if (lowerCase) {
                 encryptedMessage += String.valueOf(encryptedCharacter).toLowerCase();
                 continue;
@@ -124,6 +148,6 @@ public class Cipher {
     }
 
     public static boolean isSpecialCharacter(char character) {
-        return character < 65 || character > 122;
+        return character < 'A' || character > 'z';
     }
 }
