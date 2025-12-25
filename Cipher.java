@@ -2,7 +2,10 @@ public class Cipher {
     public static void main(String[] args) {
         String message = "GEEKSFORGEEKS";
         String key = "AYUSH";
-        System.out.println(vigenere(message, key));
+        String encrypted = vigenere(message, key);
+        String decrypted = decryptVigenere(encrypted, key);
+        System.out.println(encrypted);
+        System.out.println(decrypted);
     }
 
     public static String vigenere(String message, String key) {
@@ -24,6 +27,33 @@ public class Cipher {
             encryptedString += (char) encryptedCharNum;
         }
         return encryptedString;
+    }
+
+    public static String decryptVigenere(String encryptedMessage, String key) {
+        String decryptedString = "";
+        String newKey = keyGen(encryptedMessage, key);
+        for (int i = 0; i < encryptedMessage.length(); i++) {
+            // get values of key & curr msg
+            int currentKeyChar = newKey.charAt(i);
+            int currentEncryptedMessageChar = encryptedMessage.charAt(i);
+
+            int decryptedCharNum = 0;
+
+            // convert to range of [0-25]
+            currentKeyChar -= 65; // Y, 24
+            currentEncryptedMessageChar -= 65; // C, 2
+
+            // add 26 so negative wraps around
+            decryptedCharNum = (currentEncryptedMessageChar - currentKeyChar + 26) % 26;
+
+            // convert back to ASCII
+            decryptedCharNum += 'A';
+
+            // append to string
+            decryptedString += (char) decryptedCharNum;
+        }
+
+        return decryptedString;
     }
 
     public static String keyGen(String message, String key) {
