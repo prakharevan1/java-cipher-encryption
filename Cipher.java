@@ -1,8 +1,12 @@
 public class Cipher {
     public static void main(String[] args) {
         String message = "You are an idiot. :)";
+        String encrypted = atBash(message);
+        String decrypted = atBash(encrypted);
         System.out.println(message);
-        System.out.println(atBash(message));
+        System.out.println(encrypted);
+        System.out.println(decrypted);
+
     }
 
     public static String atBash(String message) {
