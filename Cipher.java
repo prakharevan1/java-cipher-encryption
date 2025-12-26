@@ -24,6 +24,26 @@ public class Cipher {
         return decrypted;
     }
 
+    public static String emojiReplace(String message) {
+        String encryptedMessage = message;
+        for (int i = 0; i < message.length(); i++) {
+            char currentCharacter = message.charAt(i);
+
+            if (isVowel(currentCharacter)) {
+                String firstHalf = encryptedMessage.substring(0, i);
+                String secondHalf = encryptedMessage.substring(i + 1);
+
+                encryptedMessage = firstHalf + "" + secondHalf;
+            }
+        }
+        return encryptedMessage;
+    }
+
+    public static boolean isVowel(char character) {
+        return character == 'A' || character == 'a' || character == 'E' || character == 'e' || character == 'I'
+                || character == 'i' || character == 'O' || character == 'o' || character == 'U' || character == 'u';
+    }
+
     public static String vigenere(String message, String key) {
         String newKey = key;
         if (key.length() < message.length()) {
