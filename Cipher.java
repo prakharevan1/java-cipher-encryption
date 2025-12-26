@@ -1,9 +1,9 @@
 public class Cipher {
     public static void main(String[] args) {
         String message = "Geeksforgeeks";
-        String key = "YAAI";
-        String encryptedMessage = encrypt(message, key);
-        String decryptedMessage = decrypt(encryptedMessage, key);
+        String key = "youareanidiot";
+        String encryptedMessage = vigenere(message, key);
+        String decryptedMessage = decryptVigenere(encryptedMessage, key);
 
         System.out.println("Message: " + message);
         System.out.println("Key: " + key);
@@ -25,7 +25,11 @@ public class Cipher {
     }
 
     public static String vigenere(String message, String key) {
-        String newKey = keyGen(message, key);
+        String newKey = key;
+        if (key.length() < message.length()) {
+            newKey = keyGen(message, key);
+        }
+        newKey = newKey.toUpperCase();
         String encryptedString = "";
         for (int i = 0; i < message.length(); i++) {
             int currentKeyChar = newKey.charAt(i);
@@ -62,7 +66,11 @@ public class Cipher {
 
     public static String decryptVigenere(String encryptedMessage, String key) {
         String decryptedString = "";
-        String newKey = keyGen(encryptedMessage, key);
+        String newKey = key;
+        if (key.length() < encryptedMessage.length()) {
+            newKey = keyGen(encryptedMessage, newKey);
+        }
+        newKey = newKey.toUpperCase();
         for (int i = 0; i < encryptedMessage.length(); i++) {
             int currentKeyChar = newKey.charAt(i);
             int currentEncryptedMessageChar = encryptedMessage.charAt(i);
@@ -102,12 +110,11 @@ public class Cipher {
     public static String keyGen(String message, String key) {
         String newKey = "";
         for (int i = 0; i < message.length(); i++) {
-            // LMAO -> LMAOLMAO
-            if (i > key.length() - 1) {
-                newKey += key.charAt(i % key.length());
+            if (isSpecialCharacter(key.charAt(i % key.length()))) {
+                newKey += 'S'; // random value
                 continue;
             }
-            newKey += key.charAt(i);
+            newKey += key.charAt(i % key.length());
         }
         return newKey;
     }
