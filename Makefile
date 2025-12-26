@@ -1,8 +1,8 @@
-run: Cipher.class
-	java Cipher
+run: Main.class
+	java Main
 
-Cipher.class: Cipher.java
-	javac Cipher.java
+Main.class: Main.java
+	javac Main.java
 
 clean:
-	/bin/rm Cipher.class
+	/bin/rm Cipher.class Main.class
