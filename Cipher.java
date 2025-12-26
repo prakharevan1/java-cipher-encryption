@@ -1,7 +1,14 @@
+import java.util.Scanner;
+
 public class Cipher {
     public static void main(String[] args) {
-        String message = "aeiou vowel something hello lmao";
-        String key = "youareanidiot :)";
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Input string to be encrypted:");
+        String message = scanner.nextLine();
+        System.out.println("Input key:");
+        String key = scanner.nextLine();
+
         String encryptedMessage = encrypt(message, key);
         String decryptedMessage = decrypt(encryptedMessage, key);
 
@@ -9,6 +16,8 @@ public class Cipher {
         System.out.println("Key: " + key);
         System.out.println("Encrypted message: " + encryptedMessage);
         System.out.println("Decrypted message: " + decryptedMessage);
+
+        scanner.close();
     }
 
     public static String encrypt(String message, String key) {
