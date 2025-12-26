@@ -1,9 +1,9 @@
 public class Cipher {
     public static void main(String[] args) {
-        String message = "Geeksforgeeks";
-        String key = "youareanidiot";
-        String encryptedMessage = vigenere(message, key);
-        String decryptedMessage = decryptVigenere(encryptedMessage, key);
+        String message = "aeiou vowel something hello lmao";
+        String key = "youareanidiot :)";
+        String encryptedMessage = encrypt(message, key);
+        String decryptedMessage = decrypt(encryptedMessage, key);
 
         System.out.println("Message: " + message);
         System.out.println("Key: " + key);
@@ -15,12 +15,13 @@ public class Cipher {
         String newKey = keyGen(message, key);
         String encrypted = vigenere(message, newKey);
         encrypted = atBash(encrypted);
+        encrypted = emojiReplace(encrypted);
         return encrypted;
     }
 
     public static String decrypt(String encryptedMessage, String key) {
         String newKey = keyGen(encryptedMessage, key);
-        String decrypted = decryptVigenere(atBash(encryptedMessage), newKey);
+        String decrypted = decryptVigenere(atBash(decryptEmojiReplace(encryptedMessage)), newKey);
         return decrypted;
     }
 
@@ -29,19 +30,80 @@ public class Cipher {
         for (int i = 0; i < message.length(); i++) {
             char currentCharacter = message.charAt(i);
 
-            if (isVowel(currentCharacter)) {
-                String firstHalf = encryptedMessage.substring(0, i);
-                String secondHalf = encryptedMessage.substring(i + 1);
-
-                encryptedMessage = firstHalf + "" + secondHalf;
+            String firstHalf = encryptedMessage.substring(0, i);
+            String secondHalf = encryptedMessage.substring(i + 1);
+            switch (isVowel(currentCharacter)) {
+                // AE
+                case 1:
+                    encryptedMessage = firstHalf + "Æ" + secondHalf;
+                    break;
+                case 2:
+                    encryptedMessage = firstHalf + "£" + secondHalf;
+                    break;
+                case 3:
+                    encryptedMessage = firstHalf + "Σ" + secondHalf;
+                    break;
+                // accented C
+                case 4:
+                    encryptedMessage = firstHalf + "Ç" + secondHalf;
+                    break;
+                case 5:
+                    encryptedMessage = firstHalf + "β" + secondHalf;
+                    break;
             }
         }
         return encryptedMessage;
     }
 
-    public static boolean isVowel(char character) {
-        return character == 'A' || character == 'a' || character == 'E' || character == 'e' || character == 'I'
-                || character == 'i' || character == 'O' || character == 'o' || character == 'U' || character == 'u';
+    public static String decryptEmojiReplace(String encryptedMessage) {
+        String decryptedMessage = encryptedMessage;
+        for (int i = 0; i < encryptedMessage.length(); i++) {
+            char currentCharacter = encryptedMessage.charAt(i);
+
+            String firstHalf = decryptedMessage.substring(0, i);
+            String secondHalf = decryptedMessage.substring(i + 1);
+
+            switch (currentCharacter) {
+                // AE
+                case 'Æ':
+                    decryptedMessage = firstHalf + "a" + secondHalf;
+                    break;
+                case '£':
+                    decryptedMessage = firstHalf + "e" + secondHalf;
+                    break;
+                case 'Σ':
+                    decryptedMessage = firstHalf + "i" + secondHalf;
+                    break;
+                // alpha
+                case 'Ç':
+                    decryptedMessage = firstHalf + "o" + secondHalf;
+                    break;
+                case 'β':
+                    decryptedMessage = firstHalf + "u" + secondHalf;
+                    break;
+            }
+        }
+        return decryptedMessage;
+    }
+
+    // doesnt include uppercase intentionally
+    public static int isVowel(char character) {
+        if (character == 'a') {
+            return 1;
+        }
+        if (character == 'e') {
+            return 2;
+        }
+        if (character == 'i') {
+            return 3;
+        }
+        if (character == 'o') {
+            return 4;
+        }
+        if (character == 'u') {
+            return 5;
+        }
+        return -1;
     }
 
     public static String vigenere(String message, String key) {
@@ -98,6 +160,7 @@ public class Cipher {
 
             if (isSpecialCharacter((char) currentEncryptedMessageChar)) {
                 decryptedString += encryptedMessage.charAt(i);
+                continue;
             }
 
             if (Character.isLowerCase((char) currentEncryptedMessageChar)) {
