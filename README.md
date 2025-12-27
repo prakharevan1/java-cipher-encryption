@@ -1,7 +1,7 @@
 # My cipher program
 
 **I made this for fun and I was bored, but yeah heres the code**
-**If you use this, I really just want some credit and follow the gpl v3 license ig**
+**This program uses the MIT license, and I want some credit if you plan on using this code**
 
 ## how to contribute
 1. clone the repo (fork it? idk)
@@ -14,4 +14,4 @@ if you just run 'make' it will automatically compile and run the code
 
 ill take a look and most probably just merge it with the main branch
 
-java-cipher-project  Copyright (C) 2026 nullptr.
+java-cipher-project  Copyright (C) 2025 nullptr.
