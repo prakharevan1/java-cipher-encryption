@@ -1,0 +1,10 @@
+[tools]
+java = 'latest'
+
+[tasks.build]
+sources = ["*.java"]
+run = "javac Main.java"
+
+[tasks.execute]
+depends = ["build"]
+run = "java Main"

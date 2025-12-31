@@ -1,4 +1,3 @@
-
 public class Cipher {
     public static String encrypt(String message, String key) {
         String newKey = keyGen(message, key);
