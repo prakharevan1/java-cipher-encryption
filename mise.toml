@@ -1,5 +1,6 @@
 [tools]
 java = 'latest'
+watchexec = 'latest'
 
 [tasks.build]
 sources = ["*.java"]
